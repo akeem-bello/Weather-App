@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+
 function App() {
   const [city, setcity] = useState('')
   const [weather, setweather] = useState('')
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=1d8cc56a5f045bebc79ba5dfb0e7bbf8`
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${process.env.REACT_APP_API_KEY}`
     
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   let currentDate = new Date();
   let day = currentDate.getDate();
-  let month = currentDate.getMonth(); 
+  let month = currentDate.getMonth() + 1; 
   let year = currentDate.getFullYear();
   let weekDay = days[currentDate.getDay()];
   currentDate = day + '/' + month + '/' + year;
@@ -40,21 +41,24 @@ function App() {
   }
   
   const weatherDetails = ()=>{
+    {city == "" ? alert('Type in a city name.') :
       axios.get(url).then((res)=>{
-          console.log(res.data)
-          setweather({
-            name: res.data.name,
-            temp: res.data.main.temp,
-            country: res.data.sys.country,
-            feels: res.data.main.feels_like,
-            pressure: res.data.main.pressure,
-            wind: res.data.wind.speed,
-            humidity: res.data.main.humidity,
-            cloudiness: res.data.clouds.all
-          })
-      }).catch((err)=>{
-        console.log(err)
-    })
+              console.log(res.data)
+              setweather({
+                name: res.data.name,
+                temp: res.data.main.temp,
+                country: res.data.sys.country,
+                feels: res.data.main.feels_like,
+                pressure: res.data.main.pressure,
+                wind: res.data.wind.speed,
+                humidity: res.data.main.humidity,
+                cloudiness: res.data.clouds.all
+              })
+          }).catch((err)=>{
+            console.log(err)
+        })
+  }
+      
 
     
   }
